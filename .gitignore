@@ -1,0 +1,7 @@
+# Node / pnpm
+node_modules/
+.pnpm-store/
+.pnpm/
+# Build artefacts
+dist/
+coverage/
