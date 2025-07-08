@@ -1,0 +1,47 @@
+# .github/workflows/ci.yml
+# Este workflow define o pipeline de Integração Contínua (CI) do projeto.
+
+name: CI Pipeline
+
+# Gatilhos: O workflow roda em pushes para a branch 'main' ou em qualquer Pull Request.
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # O job se chama 'build-and-test' e roda em uma máquina virtual Ubuntu.
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Passo 1: Clona o repositório para a máquina virtual.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Passo 2: Configura o PNPM, nosso gerenciador de pacotes.
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8 # Pode ajustar para a sua versão do pnpm
+
+      # Passo 3: Configura o Node.js na versão 20.x.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm' # Habilita o cache para acelerar a instalação de dependências
+
+      # Passo 4: Instala todas as dependências do monorepo.
+      - name: Install dependencies
+        run: pnpm install
+
+      # Passo 5: Executa o 'lint' em todas as aplicações e pacotes.
+      # O comando 'pnpm -r' executa o script em cada projeto do workspace.
+      - name: Run Lint
+        run: pnpm -r lint
+
+      # Passo 6: Executa os testes unitários em todas as aplicações.
+      - name: Run Tests
+        run: pnpm -r test

@@ -1,0 +1,55 @@
+.
+├── .github
+│   └── workflows
+│       └── ci.yml
+├── apps
+│   ├── api-gateway
+│   │   ├── .gitignore
+│   │   ├── .prettierrc
+│   │   ├── README.md
+│   │   ├── coverage
+│   │   ├── dist
+│   │   ├── eslint.config.mjs
+│   │   ├── jest.config.js
+│   │   ├── nest-cli.json
+│   │   ├── package.json
+│   │   ├── src
+│   │   ├── test
+│   │   ├── tsconfig.build.json
+│   │   ├── tsconfig.json
+│   │   └── tsconfig.spec.json
+│   └── portal-devedor
+│       ├── .gitignore
+│       ├── README.md
+│       ├── eslint.config.mjs
+│       ├── next-env.d.ts
+│       ├── next.config.ts
+│       ├── package.json
+│       ├── postcss.config.mjs
+│       ├── public
+│       ├── src
+│       └── tsconfig.json
+├── docs
+│   ├── ADR
+│   │   ├── 001-escolha-monorepo-pnpm.md
+│   │   └── 002-escolha-nestjs-api-gateway.md
+│   └── openapi
+├── estrutura.txt
+├── infra
+│   └── docker
+│       └── docker-compose.yml
+├── package.json
+├── packages
+│   └── core-domain
+│       ├── dist
+│       ├── index.ts
+│       ├── package.json
+│       ├── src
+│       └── tsconfig.json
+├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
+└── tests
+    ├── contract
+    └── e2e
+
+24 directories, 29 files

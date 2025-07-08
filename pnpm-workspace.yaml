@@ -1,0 +1,8 @@
+# pnpm-workspace.yaml
+# Define os locais onde o pnpm deve procurar por pacotes no workspace.
+
+packages:
+  # Inclui todos os pacotes dentro da pasta 'packages'
+  - 'packages/*'
+  # Inclui todas as aplicações dentro da pasta 'apps'
+  - 'apps/*'

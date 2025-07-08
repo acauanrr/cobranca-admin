@@ -1,0 +1,79 @@
+# infra/docker/docker-compose.yml
+# Orquestra todos os serviços necessários para o ambiente de desenvolvimento local.
+
+version: '3.8'
+
+services:
+  # Serviço do Banco de Dados PostgreSQL
+  postgres-db:
+    image: postgres:15-alpine
+    container_name: cobranca_postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: cobranca_db
+    ports:
+      - "5432:5432" # Expõe a porta do Postgres para o seu computador
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persiste os dados do banco
+    networks:
+      - cobranca-net
+
+  # Serviço de Cache/Filas Redis
+  redis-cache:
+    image: redis:7-alpine
+    container_name: cobranca_redis_cache
+    restart: always
+    ports:
+      - "6379:6379" # Expõe a porta do Redis
+    volumes:
+      - redis_data:/data # Persiste os dados do Redis
+    networks:
+      - cobranca-net
+
+  # Serviço da API Gateway (Backend NestJS)
+  # Por enquanto, está comentado. Vamos ativá-lo no próximo sprint.
+  # api-gateway:
+  #   container_name: cobranca_api_gateway
+  #   build:
+  #     context: ../../ # O contexto é a raiz do monorepo
+  #     dockerfile: infra/docker/api-gateway.Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - postgres-db
+  #     - redis-cache
+  #   networks:
+  #     - cobranca-net
+  #   volumes:
+  #     - ../../apps/api-gateway:/usr/src/app # Monta o código para hot-reload
+  #     - /usr/src/app/node_modules # Não sobrescreve o node_modules de dentro do container
+
+  # Serviço do Portal do Devedor (Frontend Next.js)
+  # Por enquanto, está comentado. Vamos ativá-lo no próximo sprint.
+  # portal-devedor:
+  #   container_name: cobranca_portal_devedor
+  #   build:
+  #     context: ../../
+  #     dockerfile: infra/docker/portal-devedor.Dockerfile
+  #   ports:
+  #     - "3001:3000"
+  #   depends_on:
+  #     - api-gateway
+  #   networks:
+  #     - cobranca-net
+  #   volumes:
+  #     - ../../apps/portal-devedor:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #     - /usr/src/app/.next
+
+# Define os volumes nomeados para persistência de dados
+volumes:
+  postgres_data:
+  redis_data:
+
+# Define a rede compartilhada para que os contêineres possam se comunicar
+networks:
+  cobranca-net:
+    driver: bridge
